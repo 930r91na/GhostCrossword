@@ -3,9 +3,9 @@
 
 // Constants
 #define NUM_THREADS 4
-#define BOARD_SIZE 11
-#define NUMBER_OF_TERMS 4
-#define WORD_DISAPPEAR_TIME 20
+#define BOARD_SIZE 12
+#define NUMBER_OF_TERMS 7
+#define WORD_DISAPPEAR_TIME 45
 
 #define BLU   "\x1B[34m"
 #define RESET "\x1B[0m"

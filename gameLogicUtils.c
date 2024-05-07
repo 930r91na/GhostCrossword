@@ -12,20 +12,20 @@ bool isdigit(char i);
 
 void giveUserInstructions() {
     char buffer;
-    printf(BLU "Welcome to the Crossword Game!\n");
-    printf("Rules: Complete the board with correct terms" RESET "\n");
-    printf("Press 'y' when ready to start, or 'e' to exit: ");
+    printf(BLU "¡Bienvenido al Juego de Crucigramas!\n");
+    printf("Reglas: Completa el tablero con los términos correctos antes de que desaparezcan. Las palabras se borran cada minuto si no has respondido. Asegúrate de que si la palabra debe estar en plural, también la ingreses en plural. Las palabras deben estar en mayúsculas, aunque la entrada no distingue entre mayúsculas y minúsculas. Ganarás cuando completes el crucigrama." RESET "\n");
+    printf("Presiona 'y' cuando estés listo para comenzar, o 'e' para salir: ");
     scanf(" %c", &buffer);
     while (buffer != 'y' && buffer != 'e') {
-        printf("Invalid input. Please press 'y' to start or 'e' to exit: ");
+        printf("Entrada inválida. Por favor presiona 'y' para empezar o 'e' para salir: ");
         scanf(" %c", &buffer);
     }
     if (buffer == 'e') {
-        printf("Exiting game as requested by user.\n");
-        // Kill the main process
+        printf("Saliendo del juego como solicitó el usuario.\n");
+
         kill(getppid(), SIGKILL);
     } else {
-        printf("User is ready. Waiting for game initialization...\n");
+        printf("El usuario está listo. Esperando la inicialización del juego...\n");
     }
 }
 

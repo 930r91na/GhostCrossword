@@ -120,11 +120,11 @@ void initCrosswordBoard() {
 void termChangeHandler(int signal) {
     if (termToAppear.term.word != NULL) {
         printf("\n TicToc TicToc! Word %d replaced!\n", termToReplaceIndex);
-        printf("%s was replaced by %s\n", termsInBoard[termToReplaceIndex].term.word, termToAppear.term.word);
-        printf("New descriotioon is %s\n", termToAppear.term.description);
         termsInBoard[termToReplaceIndex] = termToAppear;
         termToAppear.term.word = NULL;
         clockTime = 0;
+        reInitBoard = true;
+
     } else {
         printf("Ready to replace word was not ready :(!\n");
     }
