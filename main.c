@@ -8,6 +8,7 @@
 #include <time.h>
 #include <stdlib.h>
 #include <pthread.h>
+#include <signal.h>
 #include <sys/wait.h>
 #include <unistd.h>
 
@@ -24,6 +25,7 @@ termInBoard termToAppear;
 int termToReplaceIndex;
 char **historyOfWords;
 int historyOfWordsIndex = 0;
+
 
 // Init thread pool
 pthread_t threads[NUM_THREADS];
@@ -43,6 +45,8 @@ pthread_t clockThread;
 int clockTime = 0;
 
 bool reInitBoard;
+pthread_mutex_t reInitBoardMutex = PTHREAD_MUTEX_INITIALIZER;
+
 
 void initializeTermsInBoard() {
     // Initialize empty board with '*'
@@ -118,16 +122,22 @@ void initCrosswordBoard() {
 
 
 void termChangeHandler(int signal) {
+    pthread_mutex_lock(&reInitBoardMutex);
+
     if (termToAppear.term.word != NULL) {
-        printf("\n TicToc TicToc! Word %d replaced!\n", termToReplaceIndex);
+        printf("\n TicToc TicToc! Palabra  %d remplazada!\n", termToReplaceIndex);
         termsInBoard[termToReplaceIndex] = termToAppear;
         termToAppear.term.word = NULL;
         clockTime = 0;
         reInitBoard = true;
 
+        printf("Inserte lo que sea para continuar .....");
+
     } else {
-        printf("Ready to replace word was not ready :(!\n");
+        printf("No hay palabras en el pool para remplazar las actuales :(!\n");
     }
+
+    pthread_mutex_unlock(&reInitBoardMutex);
 }
 
 _Noreturn void *gameClock(void *arg) {
@@ -142,19 +152,21 @@ _Noreturn void *gameClock(void *arg) {
     }
 }
 
+int knownWords = 0;
+
 void *checkWinCondition(void*args){
-    int knownWords = 0;
     while (true) {
-        for (int i = 1; i < NUMBER_OF_TERMS; i++) {
+        for (int i = 0; i < NUMBER_OF_TERMS; i++) {
             if (termsInBoard[i].isKnown) {
                 knownWords++;
             }
         }
 
-        if (knownWords == NUMBER_OF_TERMS) {
+        if (knownWords >= NUMBER_OF_TERMS) {
             printf("Congratulations! You have completed the crossword!\n");
             // Kill all
-
+            kill(getpid(), SIGKILL);
+            break;
         }
 
         knownWords = 0;
@@ -194,14 +206,28 @@ int main(void) {
 
     // Main Game loop
     do {
+        pthread_mutex_lock(&reInitBoardMutex);
         reInitBoard = false;
+        pthread_mutex_unlock(&reInitBoardMutex);
+
         initCrosswordBoard();
         printTermsHints();
 
-        while (!reInitBoard) {
+        while (true) {
+            pthread_mutex_lock(&reInitBoardMutex);
+            bool shouldBreak = reInitBoard;
+            pthread_mutex_unlock(&reInitBoardMutex);
+
+            if (shouldBreak) {
+                break;
+            }
+
             processUserAnswer();
         }
-    } while(reInitBoard);
+    } while (true);
+
+
+    pthread_mutex_destroy(&reInitBoardMutex); // Clean up at the end
 
 
     return 0;

@@ -13,7 +13,7 @@ bool isdigit(char i);
 void giveUserInstructions() {
     char buffer;
     printf(BLU "¡Bienvenido al Juego de Crucigramas!\n");
-    printf("Reglas: Completa el tablero con los términos correctos antes de que desaparezcan. Las palabras se borran cada minuto si no has respondido. Asegúrate de que si la palabra debe estar en plural, también la ingreses en plural. Las palabras deben estar en mayúsculas, aunque la entrada no distingue entre mayúsculas y minúsculas. Ganarás cuando completes el crucigrama." RESET "\n");
+    printf(" Reglas: \n Completa el tablero con los términos correctos antes de que desaparezcan. \n Las palabras se borran cada minuto si no has respondido. \n Asegúrate de que si la palabra debe estar en plural, también la ingreses en plural. \n Las palabras deben estar en mayúsculas, aunque la entrada no distingue entre mayúsculas y minúsculas. \n Ganarás cuando completes el crucigrama." RESET "\n");
     printf("Presiona 'y' cuando estés listo para comenzar, o 'e' para salir: ");
     scanf(" %c", &buffer);
     while (buffer != 'y' && buffer != 'e') {
