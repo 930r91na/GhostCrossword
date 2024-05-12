@@ -1,19 +1,19 @@
 #include "threadsUtils.h"
 #include "parameters.h"
 
-void start_thread_pool() {
+void startThreadPool() {
     pthread_mutex_init(&lock, NULL);
-    pthread_cond_init(&work_cond, NULL);
+    pthread_cond_init(&workCond, NULL);
 
     for (int i = 0; i < NUM_THREADS; i++) {
-        pthread_create(&threads[i], NULL, worker_function, NULL);
+        pthread_create(&threads[i], NULL, workerFunction, NULL);
     }
 }
 
-void stop_thread_pool() {
+void stopThreadPool() {
     pthread_mutex_lock(&lock);
-    keep_working = false;
-    pthread_cond_broadcast(&work_cond);  // Wake up all threads to let them exit
+    keepWorking = false;
+    pthread_cond_broadcast(&workCond);  // Wake up all threads to let them exit
     pthread_mutex_unlock(&lock);
 
     // Wait for all threads to finish
@@ -22,5 +22,5 @@ void stop_thread_pool() {
     }
 
     pthread_mutex_destroy(&lock);
-    pthread_cond_destroy(&work_cond);
+    pthread_cond_destroy(&workCond);
 }

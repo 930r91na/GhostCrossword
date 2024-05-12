@@ -30,9 +30,9 @@ int historyOfWordsIndex = 0;
 // Init thread pool
 pthread_t threads[NUM_THREADS];
 pthread_mutex_t lock;
-pthread_cond_t work_cond;
-bool keep_working = true;
-bool work_available = false;
+pthread_cond_t workCond;
+bool keepWorking = true;
+bool workAvailable = false;
 
 // Threads to get termToAppear
 pthread_t termToAppearThread;
@@ -68,17 +68,17 @@ void initializeTermsInBoard() {
     termsInBoard[0] = firstTermInBoard;
     addTermToCrosswordBoard(firstTermInBoard);
 
-    start_thread_pool();  // Start the thread pool
+    startThreadPool();  // Start the thread pool
 
     // Signal work until all terms are placed
     while (!checkAllTermsInBoard()) {
         pthread_mutex_lock(&lock);
-        work_available = true;
-        pthread_cond_broadcast(&work_cond);  // Signal to threads that there is work
+        workAvailable = true;
+        pthread_cond_broadcast(&workCond);  // Signal to threads that there is work
         pthread_mutex_unlock(&lock);
     }
 
-    stop_thread_pool();  // Stop the thread pool when done
+    stopThreadPool();  // Stop the thread pool when done
 }
 
 void initCrosswordBoard() {

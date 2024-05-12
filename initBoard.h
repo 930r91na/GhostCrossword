@@ -23,6 +23,6 @@ void shuffleIntersections(int numPairs, int* indices);
 
 void addTermToCrosswordBoard(termInBoard term);
 
-void* worker_function(void* arg);
+void* workerFunction(void* arg);
 
 #endif //INITBOARD_H

@@ -22,9 +22,9 @@ extern int historyOfWordsIndex;
 // Global variable to control the thread pool
 extern pthread_t threads[NUM_THREADS];
 extern pthread_mutex_t lock;
-extern pthread_cond_t work_cond;
-extern bool keep_working;
-extern bool work_available;
+extern pthread_cond_t workCond;
+extern bool keepWorking;
+extern bool workAvailable;
 
 bool isTermAlreadyInBoard(struct term term) {
     for (int i = 0; i < NUMBER_OF_TERMS; i++) {
@@ -234,29 +234,26 @@ bool tryToPlaceATerm() {
 }
 
 
-void *worker_function(void *arg) {
+void *workerFunction(void *arg) {
     while (true) {
         pthread_mutex_lock(&lock); // Lock the mutex (necessary for condition variable)
         // Wait for work to be available with condition variable
-        while (!work_available && keep_working) {
-            pthread_cond_wait(&work_cond, &lock);
+        while (!workAvailable && keepWorking) {
+            pthread_cond_wait(&workCond, &lock);
         }
-
         // Check if it's time to shut down the pool
-        if (!keep_working) {
+        if (!keepWorking) {
             pthread_mutex_unlock(&lock);
             break;
         }
-
         // Reset work availability
-        work_available = false;
+        workAvailable = false;
         pthread_mutex_unlock(&lock);
-
         // Existing logic to place a term
         if (tryToPlaceATerm()) {
             pthread_mutex_lock(&lock);
-            work_available = true;
-            pthread_cond_broadcast(&work_cond);  // Signal other threads that there's more work - equivalent to pthread_cond_signal
+            workAvailable = true;
+            pthread_cond_broadcast(&workCond);  // Signal other threads that there's more work - equivalent to pthread_cond_signal
             pthread_mutex_unlock(&lock);
         }
     }

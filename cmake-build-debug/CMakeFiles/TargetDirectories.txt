@@ -1,3 +1,3 @@
-/Users/maemazcort/CLionProjects/TheGhostCrosswordv22/cmake-build-debug/CMakeFiles/TheGhostCrossword.dir
-/Users/maemazcort/CLionProjects/TheGhostCrosswordv22/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/maemazcort/CLionProjects/TheGhostCrosswordv22/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/vboxuser/CLionProjects/GhostCrosswordv4/cmake-build-debug/CMakeFiles/TheGhostCrossword.dir
+/home/vboxuser/CLionProjects/GhostCrosswordv4/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/vboxuser/CLionProjects/GhostCrosswordv4/cmake-build-debug/CMakeFiles/rebuild_cache.dir

@@ -9,12 +9,12 @@
 // Global variables
 extern pthread_t threads[NUM_THREADS];
 extern pthread_mutex_t lock;
-extern pthread_cond_t work_cond;
-extern bool keep_working;
+extern pthread_cond_t workCond;
+extern bool keepWorking;
 
-void start_thread_pool();
+void startThreadPool();
 
-void stop_thread_pool();
+void stopThreadPool();
 
 
 #endif //THEGHOSTCROSSWORD_THREADSUTILS_H
